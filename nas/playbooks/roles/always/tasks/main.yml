@@ -1,0 +1,9 @@
+---
+- name: install required packages for deployment processes
+  become: true
+  apt:
+    name: [vim, git]
+    state: present
+  tags:
+    - always
+

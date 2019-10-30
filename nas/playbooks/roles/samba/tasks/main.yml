@@ -1,0 +1,38 @@
+---
+- name: install samba packages
+  become: yes
+  apt:
+    name: [samba, samba-common]
+    state: present
+- name: copy config
+  copy:
+    src: smb.conf
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+  become: yes
+- name: enable samba service
+  service:
+    name: smbd
+    enabled: yes
+# Add Users
+- name: add user accounts
+  user:
+    name: "{{ item }}"
+    shell: /usr/sbin/nologin
+    groups: sambashare
+    append: yes
+  become: true
+  loop: "{{ SAMBA_USERS }}"
+- name: installs expect from snap
+  command: "snap install expect"
+  become: yes
+
+# Add samba accounts
+#- name: add samba accounts
+#  shell: |
+#    smbpasswd -a -n {{ item }}
+#    smbpasswd -e {{ item }}
+#  become: true
+#  loop: "{{ SAMBA_USERS }}"
+

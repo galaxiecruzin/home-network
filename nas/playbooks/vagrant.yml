@@ -1,0 +1,18 @@
+- hosts: vagrant
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    SAMBA_USERS:
+      - abarger
+      - luke
+      - leigh
+  roles:
+    - role: always
+    - role: samba
+
+#    - role: geerlingguy.nfs
+#      vars:
+#        nfs_exports: [ "/data *(rw,async,no_root_squash)" ]
+#        nfs_rpcbind_state: start
+#        nfs_rpcbind_enabled: true
+#      become: yes
+
