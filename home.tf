@@ -3,6 +3,27 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 }
 
+# create samba container
+resource "docker_container" "samba" {
+  name = "samba"
+  image = "dperson/samba"
+  restart = "always"
+  env = ["SHARE=data;/data;yes;no;no;all]", "USER=testuser;password", "USERa=testuser2;password"]
+  volumes {
+    host_path = "/data"
+    container_path  = "/data"
+    read_only = false
+  }
+  ports {
+    internal = 139
+    external = 139
+  }
+  ports {
+    internal = 445
+    external = 445
+  }
+}
+
 # create db container
 resource "docker_container" "db" {
   name  = "db"
